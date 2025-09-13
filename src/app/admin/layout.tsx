@@ -17,8 +17,8 @@ const navLinks = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/blog', label: 'Blog', icon: BookOpen },
   { href: '/admin/portfolio', label: 'Portfolio', icon: Palette },
-  { href: '#', label: 'Quiz Responses', icon: Bot },
-  { href: '#', label: 'Contacts', icon: Contact },
+  { href: '/admin/quiz-responses', label: 'Quiz Responses', icon: Bot },
+  { href: '/admin/contacts', label: 'Contacts', icon: Contact },
 ];
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
