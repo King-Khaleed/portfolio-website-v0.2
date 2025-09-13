@@ -1,36 +1,24 @@
+import { createClient } from '@/lib/supabase/server';
 import type { Project } from './types';
 
-export const projects: Project[] = [
-  {
-    id: 'dapp-1',
-    title: 'DeFi Dashboard',
-    description: 'A comprehensive dashboard for tracking and managing assets across multiple decentralized finance protocols. Real-time data and intuitive visualizations.',
-    image: 'portfolio-dapp-1',
-    tags: ['Web3', 'Next.js', 'Ethers.js'],
-    link: 'https://github.com/firebase/studio',
-  },
-  {
-    id: 'ecommerce-1',
-    title: 'Artisan Goods Marketplace',
-    description: 'An elegant e-commerce platform for artisans to sell their creations. Features a custom checkout flow and vendor management system.',
-    image: 'portfolio-ecommerce-1',
-    tags: ['Web Dev', 'React', 'Node.js'],
-    link: '', // No link provided, button will be disabled
-  },
-  {
-    id: 'ai-tool-1',
-    title: 'AI Content Generator',
-    description: 'A SaaS tool that uses generative AI to help writers overcome creative blocks and produce content briefs. Integrated with the latest language models.',
-    image: 'portfolio-ai-tool-1',
-    tags: ['AI', 'Next.js', 'SaaS'],
-    link: 'https://github.com/firebase/studio',
-  },
-  {
-    id: 'nft-market-1',
-    title: 'Generative Art NFT Marketplace',
-    description: 'A platform for minting and trading generative art NFTs. Features a unique auction system and artist-centric royalty structures.',
-    image: 'portfolio-nft-market-1',
-    tags: ['Web3', 'NFT', 'Solidity'],
-    link: '', // No link provided, button will be disabled
-  },
-];
+export async function getProjects(): Promise<Project[]> {
+    const supabase = createClient();
+    const { data, error } = await supabase
+        .from('portfolio_projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching projects:', error);
+        return [];
+    }
+
+    return data.map(project => ({
+        id: project.id,
+        title: project.title,
+        description: project.description,
+        image: project.image_url || '',
+        tags: project.tags || [],
+        link: project.project_url || '',
+    }));
+}

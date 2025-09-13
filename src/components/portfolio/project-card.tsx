@@ -3,21 +3,21 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import type { Project } from '@/lib/types';
 import { ArrowUpRight } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 export function ProjectCard({ project }: { project: Project }) {
-  const placeholder = PlaceHolderImages.find(p => p.id === project.image);
+  const supabase = createClient();
+  const { data: { publicUrl } } = supabase.storage.from('portfolio_images').getPublicUrl(project.image);
 
   return (
     <Card className="flex flex-col overflow-hidden bg-card/50 backdrop-blur-sm border-primary/20 transition-all hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10">
-      {placeholder && (
+      {publicUrl && (
         <div className="aspect-video relative overflow-hidden">
           <Image
-            src={placeholder.imageUrl}
-            alt={placeholder.description}
-            data-ai-hint={placeholder.imageHint}
+            src={publicUrl}
+            alt={project.title}
             fill
             className="object-cover"
           />

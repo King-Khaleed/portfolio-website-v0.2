@@ -20,7 +20,7 @@ export interface BlogPost {
   image: string;
   category: BlogCategory;
   date: string;
-  readingTime: number;
+  reading_time: number;
   meta: {
     description: string;
     keywords: string[];

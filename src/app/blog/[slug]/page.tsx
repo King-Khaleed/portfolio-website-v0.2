@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { blogPosts } from '@/lib/blog-data';
+import { getBlogPost, getRelatedBlogPosts, getAdjacentPosts, getAllPostSlugs } from '@/lib/blog-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,21 +10,25 @@ import { PostCard } from '@/components/blog/post-card';
 import { SocialShare } from '@/components/blog/social-share';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { createClient } from '@/lib/supabase/server';
 
 type Props = {
   params: { slug: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = blogPosts.find(p => p.slug === params.slug);
+  const post = await getBlogPost(params.slug);
 
   if (!post) {
     return {
       title: 'Post Not Found',
     };
   }
+  
+  const supabase = createClient();
+  const { data: { publicUrl } } = supabase.storage.from('blog_images').getPublicUrl(post.image);
 
-  const placeholder = PlaceHolderImages.find(p => p.id === post.image);
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const fullUrl = `${siteUrl}/blog/${post.slug}`;
 
@@ -39,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       images: [
         {
-          url: placeholder?.imageUrl || '',
+          url: publicUrl || '',
           width: 1200,
           height: 630,
           alt: post.title,
@@ -50,33 +54,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title: post.title,
       description: post.meta.description,
-      images: [placeholder?.imageUrl || ''],
+      images: [publicUrl || ''],
     },
   };
 }
 
 export async function generateStaticParams() {
-  return blogPosts.map(post => ({
-    slug: post.slug,
-  }));
+    const slugs = await getAllPostSlugs();
+    return slugs.map(item => ({
+        slug: item.slug
+    }));
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const postIndex = blogPosts.findIndex(p => p.slug === params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  const post = await getBlogPost(params.slug);
 
-  if (postIndex === -1) {
+  if (!post) {
     notFound();
   }
 
-  const post = blogPosts[postIndex];
-  const placeholder = PlaceHolderImages.find(p => p.id === post.image);
-
-  const relatedPosts = blogPosts
-    .filter(p => p.category === post.category && p.id !== post.id)
-    .slice(0, 3);
+  const relatedPosts = await getRelatedBlogPosts(post.category, post.id);
+  const { prevPost, nextPost } = await getAdjacentPosts(post.date);
   
-  const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
-  const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
+  const supabase = createClient();
+  const { data: { publicUrl: imageUrl } } = supabase.storage.from('blog_images').getPublicUrl(post.image);
+
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const fullUrl = `${siteUrl}/blog/${post.slug}`;
@@ -85,7 +87,7 @@ export default function BlogPostPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
-    image: placeholder?.imageUrl || '',
+    image: imageUrl || '',
     author: {
       '@type': 'Person',
       name: 'Khalid',
@@ -114,16 +116,15 @@ export default function BlogPostPage({ params }: Props) {
         <Badge variant="outline" className="mb-4 border-accent text-accent">{post.category}</Badge>
         <h1 className="text-4xl md:text-5xl font-headline font-bold mb-4">{post.title}</h1>
         <div className="text-sm text-muted-foreground">
-          <span>{post.date} &middot; {post.readingTime} min read</span>
+          <span>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} &middot; {post.reading_time} min read</span>
         </div>
       </header>
 
-      {placeholder && (
+      {imageUrl && (
         <div className="relative aspect-video rounded-lg overflow-hidden mb-12 shadow-lg shadow-primary/10">
           <Image
-            src={placeholder.imageUrl}
+            src={imageUrl}
             alt={post.title}
-            data-ai-hint={placeholder.imageHint}
             fill
             className="object-cover"
             priority
@@ -136,7 +137,7 @@ export default function BlogPostPage({ params }: Props) {
                    prose-headings:font-headline prose-headings:text-foreground prose-headings:font-bold
                    prose-a:text-accent hover:prose-a:text-accent/80 prose-strong:text-foreground
                    prose-blockquote:border-l-accent prose-blockquote:text-muted-foreground"
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        dangerouslySetInnerHTML={{ __html: post.content || '' }}
       />
       
       <div className="my-12 border-t border-b border-border/40 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">

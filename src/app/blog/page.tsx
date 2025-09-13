@@ -1,11 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { blogPosts } from "@/lib/blog-data";
+import { getBlogPosts } from "@/lib/blog-data";
 import { PostCard } from "@/components/blog/post-card";
 import type { BlogCategory } from "@/lib/types";
 
 const categories: BlogCategory[] = ["Introvert Chronicles", "Tech Insights", "Web3 Wizardry", "AI & Innovation"];
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const blogPosts = await getBlogPosts();
+  
   return (
     <div className="flex flex-col">
       <div className="text-center mb-12">

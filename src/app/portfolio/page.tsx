@@ -1,7 +1,9 @@
 import { ProjectCard } from "@/components/portfolio/project-card";
-import { projects } from "@/lib/portfolio-data";
+import { getProjects } from "@/lib/portfolio-data";
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const projects = await getProjects();
+  
   return (
     <div className="flex flex-col items-center">
       <div className="text-center mb-12">
