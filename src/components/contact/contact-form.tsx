@@ -1,7 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
-import { useEffect, useRef } from 'react';
+import { useActionState, useEffect, useRef } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useSearchParams } from 'next/navigation';
 import { qualifyLeadAction } from '@/app/actions/contact';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,7 +32,7 @@ function SubmitButton() {
 
 export function ContactForm() {
   const initialState = { message: null, errors: {}, summary: null };
-  const [state, dispatch] = useFormState(qualifyLeadAction, initialState);
+  const [state, dispatch] = useActionState(qualifyLeadAction, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const searchParams = useSearchParams();
