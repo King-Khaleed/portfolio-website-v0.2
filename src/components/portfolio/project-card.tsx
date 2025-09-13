@@ -35,11 +35,17 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button asChild variant="outline" className="w-full">
-          <Link href={project.link}>
-            View Project <ArrowUpRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
+        <Button asChild variant="outline" className="w-full" disabled={!project.link}>
+            {project.link ? (
+              <Link href={project.link} target="_blank" rel="noopener noreferrer">
+                View Project <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Link>
+            ) : (
+              <span>
+                Coming Soon <ArrowUpRight className="ml-2 h-4 w-4" />
+              </span>
+            )}
+          </Button>
       </CardFooter>
     </Card>
   );

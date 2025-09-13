@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { NftCertificate } from '@/components/quiz/nft-certificate';
+import { NftCertificate, NftCertificateCard } from '@/components/quiz/nft-certificate';
 import { generatePersonalizedExplanation } from '@/ai/flows/personalized-quiz-explanations';
 import { MAX_SCORE } from '@/lib/quiz-data';
 import type { QuizTier } from '@/lib/types';
@@ -44,15 +44,7 @@ function ResultContent({ searchParams }: { searchParams: SearchParams }) {
       </div>
 
       <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="flex flex-col items-center justify-center p-6 bg-card/50 backdrop-blur-sm border-primary/20">
-          <h2 className="text-2xl font-headline mb-4">Your Certificate</h2>
-          <div className="w-full max-w-sm">
-            <NftCertificate tier={tier} />
-          </div>
-          <Button variant="outline" className="mt-6">
-            <Download className="mr-2 h-4 w-4" /> Download
-          </Button>
-        </Card>
+        <NftCertificateCard tier={tier} />
 
         <Card className="bg-card/50 backdrop-blur-sm border-primary/20">
           <CardHeader>

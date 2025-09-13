@@ -1,5 +1,13 @@
+'use client';
+
+import { useRef, useState } from 'react';
+import html2canvas from 'html2canvas';
 import type { QuizTier } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Download, Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { Card } from '../ui/card';
 
 const certificates: Record<QuizTier, React.FC<{ className?: string }>> = {
   'Apprentice Wizard': ({ className }) => (
@@ -83,12 +91,67 @@ const certificates: Record<QuizTier, React.FC<{ className?: string }>> = {
 };
 
 
-export function NftCertificate({ tier, className }: { tier: QuizTier, className?: string }) {
+export function NftCertificate({ tier, className, certificateRef }: { tier: QuizTier, className?: string, certificateRef?: React.Ref<HTMLDivElement> }) {
   const CertificateComponent = certificates[tier];
 
   return (
-    <div className={cn("aspect-square w-full rounded-lg overflow-hidden shadow-lg shadow-primary/20", className)}>
+    <div ref={certificateRef} className={cn("aspect-square w-full rounded-lg overflow-hidden shadow-lg shadow-primary/20", className)}>
         <CertificateComponent className="w-full h-full" />
     </div>
   )
+}
+
+
+export function NftCertificateCard({ tier }: { tier: QuizTier }) {
+  const certificateRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const { toast } = useToast();
+
+  const handleDownload = async () => {
+    if (!certificateRef.current) return;
+    setIsDownloading(true);
+
+    try {
+      const canvas = await html2canvas(certificateRef.current, {
+        backgroundColor: null, // Transparent background
+      });
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `${tier.toLowerCase().replace(/ /g, '-')}-certificate.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast({
+        title: "Download Started",
+        description: "Your certificate is downloading.",
+      });
+    } catch (error) {
+      console.error("Error downloading certificate:", error);
+      toast({
+        title: "Download Failed",
+        description: "Could not download the certificate. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  return (
+    <Card className="flex flex-col items-center justify-center p-6 bg-card/50 backdrop-blur-sm border-primary/20">
+      <h2 className="text-2xl font-headline mb-4">Your Certificate</h2>
+      <div className="w-full max-w-sm">
+        <NftCertificate tier={tier} certificateRef={certificateRef} />
+      </div>
+      <Button variant="outline" className="mt-6" onClick={handleDownload} disabled={isDownloading}>
+        {isDownloading ? (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Download className="mr-2 h-4 w-4" />
+        )}
+        {isDownloading ? 'Downloading...' : 'Download'}
+      </Button>
+    </Card>
+  );
 }
