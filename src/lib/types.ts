@@ -13,10 +13,16 @@ export type BlogCategory = "Introvert Chronicles" | "Tech Insights" | "Web3 Wiza
 
 export interface BlogPost {
   id: string;
+  slug: string;
   title: string;
   description: string;
+  content: string;
   image: string;
   category: BlogCategory;
   date: string;
   readingTime: number;
+  meta: {
+    description: string;
+    keywords: string[];
+  };
 }

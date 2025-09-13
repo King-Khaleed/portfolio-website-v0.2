@@ -10,7 +10,7 @@ export function PostCard({ post }: { post: BlogPost }) {
   const placeholder = PlaceHolderImages.find(p => p.id === post.image);
 
   return (
-    <Link href="#" className="group">
+    <Link href={`/blog/${post.slug}`} className="group">
       <Card className="flex flex-col h-full overflow-hidden bg-card/50 backdrop-blur-sm border-primary/20 transition-all group-hover:border-primary/40 group-hover:shadow-lg group-hover:shadow-primary/10">
         {placeholder && (
           <div className="aspect-video relative overflow-hidden">
