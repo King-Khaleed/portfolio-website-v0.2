@@ -1,3 +1,52 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "blog-introvert-1",
+      "description": "A quiet workspace with a laptop and a cup of tea.",
+      "imageUrl": "https://picsum.photos/seed/101/600/400",
+      "imageHint": "quiet workspace"
+    },
+    {
+      "id": "blog-tech-1",
+      "description": "Lines of code on a dark screen.",
+      "imageUrl": "https://picsum.photos/seed/102/600/400",
+      "imageHint": "code screen"
+    },
+    {
+      "id": "blog-web3-1",
+      "description": "Abstract visualization of a blockchain network.",
+      "imageUrl": "https://picsum.photos/seed/103/600/400",
+      "imageHint": "blockchain network"
+    },
+    {
+      "id": "blog-ai-1",
+      "description": "Glowing neural network connections.",
+      "imageUrl": "https://picsum.photos/seed/104/600/400",
+      "imageHint": "neural network"
+    },
+    {
+      "id": "portfolio-dapp-1",
+      "description": "A modern and clean user interface for a decentralized finance application.",
+      "imageUrl": "https://picsum.photos/seed/201/600/400",
+      "imageHint": "finance dashboard"
+    },
+    {
+      "id": "portfolio-ecommerce-1",
+      "description": "An elegant e-commerce website showcasing artisan products.",
+      "imageUrl": "https://picsum.photos/seed/202/600/400",
+      "imageHint": "artisan products"
+    },
+    {
+      "id": "portfolio-ai-tool-1",
+      "description": "A user interface for an AI-powered content generation tool.",
+      "imageUrl": "https://picsum.photos/seed/203/600/400",
+      "imageHint": "ai tool"
+    },
+    {
+      "id": "portfolio-nft-market-1",
+      "description": "A vibrant marketplace for digital art and NFTs.",
+      "imageUrl": "https://picsum.photos/seed/204/600/400",
+      "imageHint": "art gallery"
+    }
+  ]
 }
