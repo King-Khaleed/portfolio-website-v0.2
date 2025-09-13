@@ -26,3 +26,12 @@ export interface BlogPost {
     keywords: string[];
   };
 }
+
+export interface ServicePackage {
+  title: string;
+  price: string;
+  target: string;
+  features: string[];
+  timeline: string;
+  support: string;
+}

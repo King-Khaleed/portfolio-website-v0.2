@@ -1,4 +1,9 @@
+import { Suspense } from 'react';
 import { ContactForm } from "@/components/contact/contact-form";
+
+function ContactFormWrapper() {
+  return <ContactForm />;
+}
 
 export default function ContactPage() {
   return (
@@ -11,7 +16,9 @@ export default function ContactPage() {
           Have a project in mind or a question about the digital arts? Send a message through the ether. The wizard is listening.
         </p>
       </div>
-      <ContactForm />
+      <Suspense fallback={<div>Loading form...</div>}>
+        <ContactFormWrapper />
+      </Suspense>
     </div>
   );
 }

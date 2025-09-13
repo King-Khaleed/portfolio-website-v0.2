@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { qualifyLeadAction } from '@/app/actions/contact';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -34,6 +35,8 @@ export function ContactForm() {
   const [state, dispatch] = useFormState(qualifyLeadAction, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const searchParams = useSearchParams();
+  const selectedPackage = searchParams.get('package');
 
   useEffect(() => {
     if (state.message && state.summary) {
@@ -62,7 +65,7 @@ export function ContactForm() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder="Your name" aria-describedby="name-error" />
+              <Input id="name" name="name" placeholder="Your name" aria-describedby="name-error" required />
               <div id="name-error" aria-live="polite" aria-atomic="true">
                 {state.errors?.name && state.errors.name.map((error: string) => (
                   <p className="text-sm text-destructive" key={error}>{error}</p>
@@ -71,7 +74,7 @@ export function ContactForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="your.email@example.com" aria-describedby="email-error" />
+              <Input id="email" name="email" type="email" placeholder="your.email@example.com" aria-describedby="email-error" required />
               <div id="email-error" aria-live="polite" aria-atomic="true">
                 {state.errors?.email && state.errors.email.map((error: string) => (
                   <p className="text-sm text-destructive" key={error}>{error}</p>
@@ -84,7 +87,15 @@ export function ContactForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="message">Message</Label>
-              <Textarea id="message" name="message" placeholder="Tell me about your project or question..." className="min-h-[120px]" aria-describedby="message-error" />
+              <Textarea 
+                id="message" 
+                name="message" 
+                placeholder="Tell me about your project or question..." 
+                className="min-h-[120px]" 
+                aria-describedby="message-error"
+                defaultValue={selectedPackage ? `I'm interested in the "${selectedPackage}" package.` : ''}
+                required
+              />
               <div id="message-error" aria-live="polite" aria-atomic="true">
                 {state.errors?.message && state.errors.message.map((error: string) => (
                   <p className="text-sm text-destructive" key={error}>{error}</p>
