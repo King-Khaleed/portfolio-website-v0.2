@@ -16,7 +16,7 @@ import { createClient } from '@/lib/supabase/server';
 const navLinks = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/blog', label: 'Blog', icon: BookOpen },
-  { href: '#', label: 'Portfolio', icon: Palette },
+  { href: '/admin/portfolio', label: 'Portfolio', icon: Palette },
   { href: '#', label: 'Quiz Responses', icon: Bot },
   { href: '#', label: 'Contacts', icon: Contact },
 ];
