@@ -24,7 +24,7 @@ export default async function AdminBlogPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="#">
+          <Link href="/admin/blog/new">
             <PlusCircle className="mr-2 h-4 w-4" />
             New Post
           </Link>

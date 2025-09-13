@@ -1,7 +1,33 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { BarChart, BookOpen, Bot, MessageSquare } from 'lucide-react';
+import { createClient } from '@/lib/supabase/server';
 
-export default function AdminDashboardPage() {
+async function getStats() {
+    const supabase = createClient();
+
+    const { count: blogPostsCount } = await supabase
+        .from('blog_posts')
+        .select('*', { count: 'exact', head: true });
+
+    const { count: quizResponsesCount } = await supabase
+        .from('quiz_responses')
+        .select('*', { count: 'exact', head: true });
+
+    const { count: contactSubmissionsCount } = await supabase
+        .from('contact_submissions')
+        .select('*', { count: 'exact', head: true });
+    
+    return {
+        blogPostsCount: blogPostsCount ?? 0,
+        quizResponsesCount: quizResponsesCount ?? 0,
+        contactSubmissionsCount: contactSubmissionsCount ?? 0
+    }
+}
+
+
+export default async function AdminDashboardPage() {
+  const { blogPostsCount, quizResponsesCount, contactSubmissionsCount } = await getStats();
+
   return (
     <div className="flex flex-col gap-8">
       <header>
@@ -20,7 +46,7 @@ export default function AdminDashboardPage() {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4</div>
+            <div className="text-2xl font-bold">{blogPostsCount}</div>
             <p className="text-xs text-muted-foreground">
               Total published posts
             </p>
@@ -34,7 +60,7 @@ export default function AdminDashboardPage() {
             <Bot className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{quizResponsesCount}</div>
             <p className="text-xs text-muted-foreground">
               Submissions recorded
             </p>
@@ -48,7 +74,7 @@ export default function AdminDashboardPage() {
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{contactSubmissionsCount}</div>
             <p className="text-xs text-muted-foreground">
               New messages received
             </p>
