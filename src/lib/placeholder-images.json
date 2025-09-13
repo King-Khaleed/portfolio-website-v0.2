@@ -47,6 +47,12 @@
       "description": "A vibrant marketplace for digital art and NFTs.",
       "imageUrl": "https://picsum.photos/seed/204/600/400",
       "imageHint": "art gallery"
+    },
+    {
+      "id": "about-hero",
+      "description": "A mystical developer illustration",
+      "imageUrl": "https://picsum.photos/seed/wizard/400/400",
+      "imageHint": "mystical developer"
     }
   ]
 }
