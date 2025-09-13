@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/shared/logo';
 import { logout } from './actions';
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 
 const navLinks = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -22,7 +22,7 @@ const navLinks = [
 ];
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

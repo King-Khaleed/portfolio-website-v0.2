@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 export default async function AdminContactsPage() {
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   const { data: submissions } = await supabase
     .from('contact_submissions')
     .select('*')

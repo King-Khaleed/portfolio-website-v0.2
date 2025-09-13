@@ -1,8 +1,8 @@
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import type { Project } from './types';
 
 export async function getProjects(): Promise<Project[]> {
-    const supabase = createClient();
+    const supabase = getSupabaseServerClient();
     const { data, error } = await supabase
         .from('portfolio_projects')
         .select('*')

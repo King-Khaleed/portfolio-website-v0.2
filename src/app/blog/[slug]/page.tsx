@@ -10,7 +10,7 @@ import { PostCard } from '@/components/blog/post-card';
 import { SocialShare } from '@/components/blog/social-share';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 
 type Props = {
   params: { slug: string };
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
   
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   const { data: { publicUrl } } = supabase.storage.from('blog_images').getPublicUrl(post.image);
 
 
@@ -76,7 +76,7 @@ export default async function BlogPostPage({ params }: Props) {
   const relatedPosts = await getRelatedBlogPosts(post.category, post.id);
   const { prevPost, nextPost } = await getAdjacentPosts(post.date);
   
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   const { data: { publicUrl: imageUrl } } = supabase.storage.from('blog_images').getPublicUrl(post.image);
 
 

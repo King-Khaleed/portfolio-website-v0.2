@@ -5,10 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { Project } from '@/lib/types';
 import { ArrowUpRight } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
+import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 
 export function ProjectCard({ project }: { project: Project }) {
-  const supabase = createClient();
+  const supabase = getSupabaseBrowserClient();
   const { data: { publicUrl } } = supabase.storage.from('portfolio_images').getPublicUrl(project.image);
 
   return (

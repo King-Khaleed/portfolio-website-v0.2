@@ -1,9 +1,9 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { BarChart, BookOpen, Bot, MessageSquare } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 
 async function getStats() {
-    const supabase = createClient();
+    const supabase = getSupabaseServerClient();
 
     const { count: blogPostsCount } = await supabase
         .from('blog_posts')

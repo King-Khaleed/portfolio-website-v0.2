@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +14,7 @@ function getQuizTier(score: number): QuizTier {
 }
 
 export default async function AdminQuizResponsesPage() {
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   const { data: responses } = await supabase
     .from('quiz_responses')
     .select('*')

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { DeletePostButton } from './_components/delete-post-button';
 
 export default async function AdminBlogPage() {
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   const { data: posts } = await supabase
     .from('blog_posts')
     .select('id, title, category, date, slug')

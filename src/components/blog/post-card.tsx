@@ -4,10 +4,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge';
 import type { BlogPost } from '@/lib/types';
 import { ArrowUpRight } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
+import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 
 export function PostCard({ post }: { post: BlogPost }) {
-  const supabase = createClient();
+  const supabase = getSupabaseBrowserClient();
   const { data: { publicUrl } } = supabase.storage.from('blog_images').getPublicUrl(post.image);
 
   return (

@@ -4,11 +4,11 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ProjectEditorForm } from './_components/project-editor-form';
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import type { Project } from '@/lib/types';
 
 async function getProject(id: string): Promise<Project | null> {
-    const supabase = createClient();
+    const supabase = getSupabaseServerClient();
     const { data, error } = await supabase
         .from('portfolio_projects')
         .select('*')

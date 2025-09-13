@@ -1,11 +1,11 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 export async function login(prevState: any, formData: FormData) {
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
 
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -29,7 +29,7 @@ export async function login(prevState: any, formData: FormData) {
 }
 
 export async function logout() {
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   await supabase.auth.signOut();
   redirect('/admin/login');
 }

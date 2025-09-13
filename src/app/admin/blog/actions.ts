@@ -1,11 +1,11 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 export async function deleteBlogPost(formData: FormData) {
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
   
   const schema = z.object({
     id: z.string().uuid(),
