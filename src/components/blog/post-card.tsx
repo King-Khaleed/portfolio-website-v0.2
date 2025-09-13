@@ -29,7 +29,7 @@ export function PostCard({ post }: { post: BlogPost }) {
           <CardDescription className="text-sm line-clamp-2">{post.description}</CardDescription>
         </CardHeader>
         <CardFooter className="mt-auto pt-0 text-xs text-muted-foreground">
-            <span>{new Date(post.date).toLocaleDate'en-US', { year: 'numeric', month: 'long', day: 'numeric' })} &middot; {post.reading_time} min read</span>
+            <span>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} &middot; {post.reading_time} min read</span>
             <ArrowUpRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
         </CardFooter>
       </Card>
