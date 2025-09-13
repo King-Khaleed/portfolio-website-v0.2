@@ -17,15 +17,11 @@ export function Footer() {
               <Github className="h-5 w-5" />
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="https://twitter.com/firebase" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-              <Twitter className="h-5 w-5" />
-            </Link>
+          <Button variant="ghost" size="icon" disabled>
+            <Twitter className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="https://www.linkedin.com/company/firebase" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <Linkedin className="h-5 w-5" />
-            </Link>
+          <Button variant="ghost" size="icon" disabled>
+            <Linkedin className="h-5 w-5" />
           </Button>
         </div>
       </div>
