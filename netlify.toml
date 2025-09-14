@@ -1,0 +1,16 @@
+# Netlify configuration file
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Command to build the project
+  command = "npm run build"
+
+  # Directory to publish
+  publish = ".next"
+
+[build.environment]
+  # Disable telemetry to speed up build times
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
