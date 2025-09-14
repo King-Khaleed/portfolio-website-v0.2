@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useFormState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { updateBlogPost } from '../actions';
 import { Label } from '@/components/ui/label';
@@ -44,7 +44,7 @@ export function BlogEditorForm({ post }: { post: BlogPost }) {
     errors: undefined
   });
 
-  const [category, setCategory] = useFormState((state: string, payload: string) => payload, post.category);
+  const [category, setCategory] = useState(post.category);
 
   useEffect(() => {
     if (state.message && !state.errors) {
@@ -88,7 +88,7 @@ export function BlogEditorForm({ post }: { post: BlogPost }) {
 
       <div className="space-y-2">
         <Label htmlFor="category-select">Category</Label>
-        <Select onValueChange={(value) => setCategory(value)} defaultValue={post.category} name="category-select">
+        <Select onValueChange={(value) => setCategory(value as BlogCategory)} defaultValue={post.category} name="category-select">
           <SelectTrigger>
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>

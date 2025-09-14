@@ -1,7 +1,7 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
-import { useFormStatus, useFormState } from 'react-dom';
+import { useActionState, useEffect, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { createBlogPost } from '../actions';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -45,7 +45,7 @@ export function BlogEditorForm() {
   });
   
   // A hidden input is needed to pass the category to the form action
-  const [category, setCategory] = useFormState((state: string, payload: string) => payload, '');
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     if (state.message && !state.errors) {
