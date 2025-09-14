@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import {
   BookOpen,
   Contact,
@@ -27,10 +26,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/admin/login');
-  }
 
   return (
     <div className="min-h-screen w-full flex bg-muted/40">
