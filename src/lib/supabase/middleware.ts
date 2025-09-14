@@ -40,19 +40,22 @@ export async function updateSession(request: NextRequest) {
 
   console.log(`Middleware check on: ${url.pathname}`);
 
-  // Protect admin routes
-  if (url.pathname.startsWith('/admin') && url.pathname !== '/admin/login') {
-    if (!user) {
-      console.log('No user found, redirecting to /admin/login');
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
-     console.log('User found, allowing access to admin route.');
+  // Protect admin routes: if user is not logged in and is trying to access an admin page (that isn't the login page), redirect to login.
+  if (!user && url.pathname.startsWith('/admin') && url.pathname !== '/admin/login') {
+    console.log('No user found, redirecting to /admin/login');
+    return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
-  // Redirect authenticated users from login page to dashboard
-  if (url.pathname === '/admin/login' && user) {
+  // If user is logged in and tries to access the login page, redirect to the dashboard.
+  if (user && url.pathname === '/admin/login') {
      console.log('User is authenticated and on login page, redirecting to /admin/dashboard');
      return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+  }
+  
+  if (user) {
+    console.log('User found, allowing access.');
+  } else {
+    console.log('No user found, but path is public or login page.');
   }
 
   return supabaseResponse
