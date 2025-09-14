@@ -1,8 +1,8 @@
-import { getSupabaseServerClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient, getSupabaseServerClientReadOnly } from '@/lib/supabase/server';
 import type { BlogPost } from './types';
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-    const supabase = getSupabaseServerClient();
+    const supabase = getSupabaseServerClientReadOnly();
     const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
@@ -25,7 +25,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
-    const supabase = getSupabaseServerClient();
+    const supabase = getSupabaseServerClientReadOnly();
     const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
@@ -49,7 +49,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 }
 
 export async function getRelatedBlogPosts(category: string, currentPostId: string): Promise<BlogPost[]> {
-    const supabase = getSupabaseServerClient();
+    const supabase = getSupabaseServerClientReadOnly();
     const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
@@ -74,7 +74,7 @@ export async function getRelatedBlogPosts(category: string, currentPostId: strin
 }
 
 export async function getAdjacentPosts(currentPostDate: string): Promise<{ prevPost: { slug: string } | null, nextPost: { slug: string } | null }> {
-    const supabase = getSupabaseServerClient();
+    const supabase = getSupabaseServerClientReadOnly();
 
     const { data: prevData } = await supabase
         .from('blog_posts')
@@ -99,7 +99,7 @@ export async function getAdjacentPosts(currentPostDate: string): Promise<{ prevP
 }
 
 export async function getAllPostSlugs() {
-    const supabase = getSupabaseServerClient();
+    const supabase = getSupabaseServerClientReadOnly();
     const { data, error } = await supabase.from('blog_posts').select('slug');
     if (error) {
         console.error('Error fetching slugs', error);
