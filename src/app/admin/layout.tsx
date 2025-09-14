@@ -45,7 +45,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               variant="ghost"
               className="w-full justify-start"
               asChild
-              disabled={link.href === '#'}
             >
               <Link href={link.href}>
                 <link.icon className="mr-2 h-4 w-4" />
