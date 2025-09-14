@@ -5,12 +5,14 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 export async function login(prevState: any, formData: FormData) {
+  console.log('Login action initiated.');
   const supabase = getSupabaseServerClient();
 
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
   if (!email || !password) {
+    console.log('Login failed: Email or password missing.');
     return { error: 'Email and password are required.' };
   }
 
@@ -20,10 +22,11 @@ export async function login(prevState: any, formData: FormData) {
   });
 
   if (error) {
-    console.error('Login error:', error.message);
+    console.error('Login error from Supabase:', error.message);
     return { error: 'Could not authenticate user. Please check your credentials.' };
   }
-
+  
+  console.log('User successfully signed in. Revalidating path and redirecting to dashboard.');
   revalidatePath('/', 'layout');
   redirect('/admin/dashboard');
 }
